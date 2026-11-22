@@ -1,0 +1,23 @@
+# staging-only
+STYLE.md
+BUILD-NOTES.md
+
+# hygiene guard: never commit firmware or large binaries by accident
+*.CAP
+*.cap
+*.rom
+*.bin
+*.ffs
+*.efivar
+*.fv
+*.efi
+*.exe
+*.dll
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# python
+__pycache__/
+*.pyc
