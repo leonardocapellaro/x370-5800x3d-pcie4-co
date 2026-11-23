@@ -185,7 +185,7 @@ campaign's CF8 discipline; M4/M5 in doc 10 carry their verdicts.
 
 | window | reachable/readable via CF8/CFC | writable from x86 | evidence |
 |---|---|---|---|
-| NBIO `0x038xxxxx` (proxy `0x03810054`, witness `0x001A43B9`, family `0380–0385`) | **YES, alive** on both bases | **YES** — the only echo-proven x86 SMN write (`proxy:=1` echo=1, flash 27) — and self-defeating (the request itself is the clamp trigger) | flashes 10/11, boot #5 (RASTRO §A 36/37; §BB) |
+| NBIO `0x038xxxxx` (proxy `0x03810054`, witness `0x001A43B9`, family `0380–0385`) | **YES, alive** on both bases | **YES** — echo-proven x86 SMN writes exist (`proxy:=1` echoed 1: the unnumbered W1-A15/A16 runs, then flash 26/27) — and they are self-defeating (the request itself is the clamp trigger) | flashes 10/11, boot #5 (RASTRO §A 36/37; §BB) |
 | box-12 QCB `0x03b10700/704/718/71c` + mirror `0x03010700` | **NO** — all FF (`710/71c` read 0 = idle) | **NO** — replica writes did not echo (flag/msg/cmd → FF; `71c` read back idle 0) | flashes 9/10 + flash 22 write test (M3 triple, M22) |
 | SMU data pages `0x0101_xxxx` / `0x0301_xxxx` | **NO** — all-FF (probe 2 592/2 592, echo 100%) | untestable; the CO-port emitter is the SMU itself (constants occur only inside the SMU body) | flash 15 (M22/M23) |
 | PSP-peripheral page `0x0904_xxxx` | **NO** — FF/0 with live controls in the same boot | not tested (nothing visible to write) | flash 16 (M22; breach B7 closed) |

@@ -254,7 +254,8 @@ measured `00000001→001A43B9` afterwards.
   so the odd-entry hypothesis died with measurement). **The W1 write never
   executed — no proxy-write verdict comes from W1**
   (src: biosmod_8902_co/STATUS.md, FLASH 12/FLASH 13 blocks).
-- **The one echo-proven proxy write is from the A-series.** On the official
+- **The echo-proven proxy writes are from the A-series lineage** (first on the
+  unnumbered W1-A15/A16 runs, then on A26v2). On the official
   base with a module that wrote `proxy:=1` and set Setup target to 4
   (A26v2, flash 27): *"proxy:=1 echo=1 SUCESSO, target:=4 mascarado echo 3,3,
   Cap2=0xe no hook-time"* — the write echoed 1, the speed target was masked
@@ -404,7 +405,7 @@ another board/vendor showing the mechanism, APML/hardware access
 ## Sources
 
 - `biosmod_8902_co/RASTRO.md` — master campaign log (§A index; §B dead-path
-  registry M1–M25+; §N campaign close; §P–§KK front-B/PSP-patch era and the
+  registry M1–M27, with M28–M30 registered later in the log; §N campaign close; §P–§KK front-B/PSP-patch era and the
   poison arc; §BB unified clamp model; §QQ–§CCC e07/TE endgame; §DDD–§FFF
   active-directory correction, A34/A35 results).
 - `biosmod_8902_co/RELATORIO-FINAL-8902.md` — phase-1 close and the 21/11

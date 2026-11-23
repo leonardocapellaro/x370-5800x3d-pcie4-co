@@ -3,9 +3,9 @@
 A complete, documented reverse-engineering case study of ASUS BIOS 8902 for the
 **ROG Crosshair VI Hero (X370)** running a **Ryzen 7 5800X3D** — including the
 firmware paths that decide PCIe link speed, what the chipset/PSP validation
-actually does, how AMD's menu capability flags work, and roughly **40 offline
-built+validated BIOS builds** (every one flashed manually by the owner, zero
-bricks, zero fuse touches).
+actually does, how AMD's menu capability flags work, and roughly **70 offline
+built+validated BIOS builds** behind ~40 board flashes (every flash done
+manually by the human owner, zero bricks, zero fuse touches).
 
 This repository contains **analysis, tools and hashes — no firmware**. You
 supply your own BIOS images; the tools never embed any.
@@ -15,7 +15,7 @@ supply your own BIOS images; the tools never embed any.
 | | PCIe Gen4 | Curve Optimizer / PBO | How |
 |---|---|---|---|
 | **Build "RC1"** (V2 era) | **works** (x16 GPU + x4 NVMe, measured) | refused by SMU (`0x000000FF`) | PSP validation request 9 is skipped (`SKIP_PSP`) and the "BIOS boot done" mailbox call is NOPed — the chipset/strap check never runs, and with it the check that would feed the CO state |
-| **Build "A36"** (final, daily) | Gen3 (stock clamp intact) | **works, natively, in the menus** | official 8902 + exactly **37 bytes** of x86 patches in unsigned DXE modules: 6 capability-flag stores NOPed (PBO + Curve Optimizer pages appear) + boost base `:= 4550 MHz` with a ±200 menu range |
+| **Build "A36"** (final build; the accepted daily line was A28/A23) | Gen3 (stock clamp intact) | **works, natively, in the menus** (per the IFR analysis; the A36 on-board confirmation — flash 39 — was pending at log close, docs/13) | official 8902 + exactly **37 bytes** of x86 patches in unsigned DXE modules: 6 capability-flag stores NOPed (PBO + Curve Optimizer pages appear) + boost base `:= 4550 MHz` with a ±200 menu range |
 
 The headline negative — and the most useful part of this study: **Gen4 + CO in
 one BIOS is excluded by construction** on this platform/BIOS. The same signed
@@ -53,7 +53,7 @@ python3 tools/build/fvmain_bytepatch.py CROSSHAIR-VI-HERO-ASUS-8902.CAP out.CAP
 ```
 
 Reference hashes: official 8902 base
-`04ddae2d0650353ec7bafa50a281528791a74694960f2104ac9d53657b0b6bba`; recovery
+`04ddae2d0650353ec7bafa50a281528791a74694960f2104ac9d53657b0b6bba`; daily-line
 build A28 `ec3277b38da8f6b692445bbe548693f0bda6199395a50fc9f5e27b4ce1da2168`;
 Gen4 skip anchor (V2) `8b19a729…` (full sha in
 [docs/11](docs/11-build-catalog.md)).

@@ -4,7 +4,7 @@
 
 This campaign touched a running machine's firmware for nine days without ever letting a
 software agent flash, reboot, or write a live register. What made that safe — and what made
-its ~40 builds and ~40 flashes produce publishable conclusions instead of folklore — is a
+its ~70 builds and ~40 flashes produce publishable conclusions instead of folklore — is a
 small set of disciplines: strict division of hands between agents and the owner;
 pre-registered prediction matrices (observable + decision criterion + what-refutes, written
 before any build); an "echo" rule for every write; a deterministic build pipeline with an

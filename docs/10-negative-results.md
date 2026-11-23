@@ -9,7 +9,7 @@ the decision each branch would force), and no door was called dead without
 "closed with measurement" — live controls decoded twice in the same boot,
 echoes recorded, raw bytes preserved with sha256. The master log is
 `biosmod_8902_co/RASTRO.md` (§B "registro mestre de caminhos mortos", one-line
-verdicts M1–M30); part (a) below translates that registry, part (b) gives the
+verdicts M1–M27, extended to M28–M30 in later sections of the log); part (a) below translates that registry, part (b) gives the
 bigger closed routes in hypothesis→test→measurement→status form, and the last
 table lists, per door, **what would reopen it** when the sources state a
 trigger. Nothing here is speculation: each entry points at the file that owns
@@ -184,8 +184,9 @@ doc 04 §3 (`biosmod_8902_co/RASTRO.md` §A 39–42, 46, 53, §B M5/M6/M24/M26).
 
 ### NBIO proxy write = the poison (A26v2, §BB/§CC)
 Hypothesis (T39 lineage): writing `0x03810054 := 1` post-30 with echo lifts the
-clamp. Measurement (flash 27, the only echo-proven x86 SMN write of the
-campaign): `proxy:=1` **echoed 1**, the speed target was masked (`echo 3,3`,
+clamp. Measurement (flash 27 — the first board-confirmed instance of the
+campaign's only echo-proven x86 SMN write class, previously seen on the
+unnumbered W1-A15/A16 runs): `proxy:=1` **echoed 1**, the speed target was masked (`echo 3,3`,
 `Cap2=0xe` at hook time), and both roots ran clamped max 8.0 — while on RC1
 (skip armed) the same write was ignored and roots ran 16.0. Unified model: the
 consumer reacts to **any** Gen4 request (`Setup[0x239]=4` or proxy `:=1`) ⇒

@@ -29,12 +29,13 @@ connect them.
 | | PCIe Gen4 | Curve Optimizer / PBO | How |
 |---|---|---|---|
 | **GEN4-REL1 / "RC1"** (`8b19a72945703ffaf61a1f6886d82bc2c70100c0f3004666933ea7ecfcb4074f`) | **works** — GPU x16 + M.2 x4 at 16.0 GT/s, measured on board | refused by the SMU (`0x000000FF`) | DXIO `SKIP_PSP`=1 in mailbox request 9 so the PSP chipset-vetting exchange never runs, plus NOP of the one "BIOS boot done" call (PSP mailbox command 6) `(src: docs/06 §1; biosmod_8902_co/frentes/A-gen4-com-skip/)` |
-| **"A36"** (`f87ba18d677e6ae79c8a3a5118be87fcebba97f5958690718521f89efbd87a22`) | Gen3 (stock clamp intact) | **works natively in the menus** — CO settable, PBO exposed | official 8902 + exactly **37 bytes** of x86 patches in unsigned DXE modules: 6 capability-flag stores NOPed across the three AOD driver copies + boost base := `4550 MHz` with a ±200 menu range `(src: docs/07 §7; docs/11 §6; tools/build/fvmain_bytepatch.py)` |
+| **"A36"** (`f87ba18d677e6ae79c8a3a5118be87fcebba97f5958690718521f89efbd87a22`) | Gen3 (stock clamp intact) | **works natively in the menus** — CO settable, PBO exposed (build-side by IFR proof; the A36 board confirmation — flash 39 — was pending at log close) | official 8902 + exactly **37 bytes** of x86 patches in unsigned DXE modules: 6 capability-flag stores NOPed across the three AOD driver copies + boost base := `4550 MHz` with a ±200 menu range `(src: docs/07 §7; docs/11 §6; tools/build/fvmain_bytepatch.py)` |
 
 The A36 image is reproducible byte-for-byte from the official BIOS with this repo's tool
 (see README "Reproduce the final build yourself"). The accepted daily state at campaign
 close was the A28/A23 family (CO −22 + PBO exposed, Gen3) with A31 as a proven recovery
-image; the board was left on A32, healthy `(src: biosmod_8902_co/HANDOFF-FINAL-20261122.md §1, §3)`.
+image; the board was left on A35 (= A28 behavior plus a no-effect strap rewrite,
+flash 38), healthy `(src: biosmod_8902_co/HANDOFF-FINAL-20261122.md §1, §3; docs/12 flash log rows 35–38)`.
 
 ## Why Gen4 + CO in one BIOS is excluded by construction
 
@@ -64,18 +65,21 @@ The argument, in the four links the campaign could verify (full detail in
    image, HIC, is inert and identical across bases) `(src: docs/05 §7; docs/09 §8)`.
 
 Every attempt to decouple validation from the strap is catalogued with the measurement that
-killed it: 19 documented dead ends in the headline count, and the complete registry is the
-M1–M30 list in [docs/10](10-negative-results.md).
+killed it: the 15 closed routes listed in
+[docs/10](10-negative-results.md) part (b), and the complete registry is the
+M1–M30 list there.
 
 ## Scale and safety record
 
 Nine days (14–22 November 2026: V2 predecessor 14–17 Nov, then this campaign 18–22 Nov),
-task chain T01→T58 plus the A16…A36 build sprint, ~40 offline-built and offline-validated
-CAPs, 39 numbered board flashes (a few unnumbered). **Every flash, reboot and menu action
+task chain T01→T58 plus the A16…A36 build sprint, ~70 offline-built and offline-validated
+CAPs, board flashes numbered 1–39 (39 was never executed; a few runs were unnumbered). **Every flash, reboot and menu action
 was performed by the human owner**; agents built, verified and read logs only. **Zero
-fuse/OTP touches, zero signed-content changes shipped, zero bricks** — the two images that
-refused to boot (flash 7 SWAP7306, F9 storm; flash 37 A34, non-POST) were each recovered by
-the owner via USB FlashBack `(src: docs/12 flash log; biosmod_8902_co/HANDOFF-FINAL §7)`.
+fuse/OTP touches, zero signed-content changes shipped, zero bricks** — the images that
+refused to boot (flash 7 SWAP7306, F9 storm; flash 18 OBSPEI-A2, hung at POST 61; the
+A19 run, stuck at POST 36; flash 37 A34, non-POST) were each recovered by
+the owner via clear-CMOS and/or USB FlashBack `(src: docs/12 flash log;
+RASTRO.md §B M27 and §O (recovery "clear-CMOS + Flashback, proven twice"); biosmod_8902_co/HANDOFF-FINAL §7)`.
 The workflow behind that record is [docs/02](02-methodology.md).
 
 ## How to use this repo (three reading paths)

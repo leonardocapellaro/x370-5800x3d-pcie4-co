@@ -45,7 +45,7 @@ each with a pointer to the doc that uses it most.
 | term | meaning |
 |---|---|
 | **AOD / AOD_SETUP** | AMD's overclocking setup driver and its NVRAM data block; capability byte `0xdf` (written then deliberately zeroed) is what hides the PBO and Curve-Optimizer pages on the 5800X3D (docs/07 §1). |
-| **PBO (Precision Boost Overdrive)** | AMD's power/current-limit override, hidden on this board until the A36 flag NOPs exposed it natively (docs/07 §1/§6). |
+| **PBO (Precision Boost Overdrive)** | AMD's power/current-limit override, hidden on this board until the A36 flag NOPs exposed it natively (build-side; the A36 board confirmation was pending, docs/07 §1/§6). |
 | **Curve Optimizer (CO)** | Per-core voltage-offset control; its application chain (table builder → SMU DXE driver → MP1 `0x35/0x36`) was already alive here — only the menu door was missing (docs/07 §1–§3). |
 | **IFR** | The setup pages' binary form representation (forms, questions, conditions) that our dumps parsed to find what renders and what hides (docs/07 §1). |
 | **SUPPRESS_IF** | The IFR visibility condition; exactly two of them, on qid `0x4f0`, are the only readers of the hidden capability byte (docs/07 §1). |
@@ -55,7 +55,7 @@ each with a pointer to the doc that uses it most.
 | **OCMR** | The ASUS overclocking varstore (`VARSTORE_OCMR_SETTINGS`, 7611 B) backing the ASUS OC page and its hidden-numeric quirks (docs/07 §6). |
 | **`.CMO`** | ASUS BIOS user-profile format: an EFI 1.1 compressed stream (8-byte header, PBIT=4) that our codec reproduces byte for byte (docs/07 §8). |
 | **efivar / efivars** | The Linux kernel's sysfs exposure of UEFI variables (`/sys/firmware/efi/efivars`) — the campaign's sudo-free, read-only log channel off the board (docs/08, docs/14). |
-| **FlashBack / EZFlash** | The two ways onto this board's flash: USB recovery FlashBack accepts modified images (it saved the campaign twice), the in-setup EZFlash rejects them (docs/03, docs/12, docs/02 §1). |
+| **FlashBack / EZFlash** | The two ways onto this board's flash: USB recovery FlashBack accepts modified images (the owner's route back from every failed boot — flashes 7/18/37), the in-setup EZFlash rejects them (docs/03, docs/12, docs/02 §1). |
 | **POST code (F9)** | AMI BIOS boot diagnostic code; F9 (memory-init/training failure) is the intermittent symptom analyzed in docs/15. |
 
 ## Boot and PCIe
@@ -75,12 +75,12 @@ each with a pointer to the doc that uses it most.
 |---|---|
 | **`C6H.<FAMILY>.<variant>`** | The CAP naming convention: board prefix (Crosshair VI Hero), family code (`CO*`, `SV*`, `SONDA`, `REVET`, `MESA`, `SMN12`, `NBIO-B`, `W1`, `PEIPROBE`, `SMU101`, `PG0904`, `OBSPEI`), variant letter (docs/11). |
 | **REVET** | The Curve-Optimizer "flip" patch family; **REVET-P2** is the accepted CO-half image of phase 1 (docs/11 §2, docs/05 §5). |
-| **W1** | The first proxy-write ("unclamp") module family — also three of the four witnesses to the PEI-dispatch deaths (with PEIPROBE) (docs/08 §4, docs/10). |
+| **W1** | The first proxy-write ("unclamp") module family — two of the three witnesses to the PEI-dispatch triple death, with PEIPROBE (flashes 12/13/14) (docs/08 §4, docs/10). |
 | **OBSPEI** | The read-only DXE observer family (flashes 17–21) that mapped HOBs/ctx/NVRAM and, through its own crashes, derived the platform's safe-variable-size rule M27 (docs/08 §5). |
 | **RC1 / REL1 / anchor (âncora)** | GEN4-REL1 — kept as the reference "RC1" (`sha 8b19a729…`), the Gen4-skip image held on the USB stick as the campaign's safe recovery anchor (docs/11 §0, docs/06 §5). |
 | **Front A / Front B** | The two permanent tracks — A: Gen4 via skip base; B: clean 8902 with the chipset check ON — whose bases and results were never mixed (docs/05 §5, `biosmod_8902_co/frentes/`). |
-| **flash N** | Numbering of the physical board flashes (1–39, a few unnumbered), used as the evidence identifier throughout the docs (docs/12). |
-| **RASTRO / M-registry** | The master anti-repetition log (`RASTRO.md`), whose §B records dead paths as M1–M30 with the measurement that closed each (docs/10 part (a), docs/02 §5). |
+| **flash N** | Numbering of the physical board flashes (1–39 — flash 39 was pending, never executed — plus a few unnumbered runs), used as the evidence identifier throughout the docs (docs/12). |
+| **RASTRO / M-registry** | The master anti-repetition log (`RASTRO.md`), whose §B records dead paths M1–M27 (M28–M30 added later in the log) with the measurement that closed each (docs/10 part (a), docs/02 §5). |
 | **prediction matrix** | The pre-registered table of named outcome branches and the decision each forces, written before building or flashing (docs/02 §2, docs/10). |
 | **echo doctrine** | Every write is bracketed by a read-before and a read-back-after, inside built CAPs only — no blind writes ever (docs/02 §3). |
 | **régua** | Portuguese for "gauge": the coordinator's independent acceptance re-check of a build — re-run the release, re-derive the target table from the spec, run a per-task gate script (docs/02 §4, docs/11 §7). |
