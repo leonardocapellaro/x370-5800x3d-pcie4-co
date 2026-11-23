@@ -12,8 +12,16 @@ supply your own BIOS images; the tools never embed any.
 
 ## The two results people actually want
 
+Start from what the board **ships with**, because it frames everything below: on stock
+firmware, an X370 board with a Ryzen 5000 CPU such as the 5800X3D has **neither** feature —
+PCIe is clamped to Gen3 (no official BIOS of this board — or of X370/X470 generally, in any
+manufacturer — ever offered Gen4 with Ryzen 5000), and Curve Optimizer is not in the menus at
+all on X3D parts (the capability gate is zeroed). We got each half working on this board;
+the story is what it took, and why the two halves cannot meet.
+
 | | PCIe Gen4 | Curve Optimizer / PBO | How |
 |---|---|---|---|
+| **Stock 8902** (starting point) | Gen3 — the chipset check writes the anti-Gen4 strap every boot | **absent from the menus** on X3D (capability flag zeroed) | nothing — this is the "neither" every owner of this combo lives with |
 | **Build "RC1"** (V2 era) | **works** (x16 GPU + x4 NVMe, measured) | refused by SMU (`0x000000FF`) | PSP validation request 9 is skipped (`SKIP_PSP`) and the "BIOS boot done" mailbox call is NOPed — the chipset/strap check never runs, and with it the check that would feed the CO state |
 | **Build "A36"** (final build; the accepted daily line was A28/A23) | Gen3 (stock clamp intact) | **works, natively, in the menus** (per the IFR analysis; the A36 on-board confirmation — flash 39 — was pending at log close, docs/13) | official 8902 + exactly **37 bytes** of x86 patches in unsigned DXE modules: 6 capability-flag stores NOPed (PBO + Curve Optimizer pages appear) + boost base `:= 4550 MHz` with a ±200 menu range |
 

@@ -2,7 +2,11 @@
 
 ## Summary
 
-On an ASUS ROG Crosshair VI Hero (X370) running official BIOS 8902 with a Ryzen 7 5800X3D,
+Start from the stock state, because it is the baseline this whole study exists to change:
+an X370 board with a Ryzen 5000 CPU such as the 5800X3D ships with **neither** PCIe Gen4 nor
+Curve Optimizer — no official BIOS of this board (and none of any X370/X470 board, from any
+manufacturer) ever offered Gen4 with Ryzen 5000 `(src: docs/05 §1)`, and CO is not present
+in the menus on X3D parts `(src: docs/07 §1)`. On an ASUS ROG Crosshair VI Hero (X370) running official BIOS 8902 with a Ryzen 7 5800X3D,
 this campaign obtained **PCIe Gen4 on both CPU roots — but only in a build where Curve
 Optimizer is refused**, and **Curve Optimizer + PBO fully working in the native menus — but
 only on Gen3**. The combination in one BIOS is **excluded by construction**: the same
@@ -28,6 +32,7 @@ connect them.
 
 | | PCIe Gen4 | Curve Optimizer / PBO | How |
 |---|---|---|---|
+| **Stock 8902** (the "neither" baseline) | Gen3 — the signed chipset check writes the anti-Gen4 strap every boot | absent from the menus on X3D (capability gate zeroed) | nothing — the state every owner of this CPU/board combo starts from `(src: docs/05 §1–§2; docs/07 §1)`. |
 | **GEN4-REL1 / "RC1"** (`8b19a72945703ffaf61a1f6886d82bc2c70100c0f3004666933ea7ecfcb4074f`) | **works** — GPU x16 + M.2 x4 at 16.0 GT/s, measured on board | refused by the SMU (`0x000000FF`) | DXIO `SKIP_PSP`=1 in mailbox request 9 so the PSP chipset-vetting exchange never runs, plus NOP of the one "BIOS boot done" call (PSP mailbox command 6) `(src: docs/06 §1; biosmod_8902_co/frentes/A-gen4-com-skip/)` |
 | **"A36"** (`f87ba18d677e6ae79c8a3a5118be87fcebba97f5958690718521f89efbd87a22`) | Gen3 (stock clamp intact) | **works natively in the menus** — CO settable, PBO exposed (build-side by IFR proof; the A36 board confirmation — flash 39 — was pending at log close) | official 8902 + exactly **37 bytes** of x86 patches in unsigned DXE modules: 6 capability-flag stores NOPed across the three AOD driver copies + boost base := `4550 MHz` with a ±200 menu range `(src: docs/07 §7; docs/11 §6; tools/build/fvmain_bytepatch.py)` |
 
