@@ -42,7 +42,12 @@ what could still change the Gen4+CO verdict; nothing in groups 2–3 can.
    semantics of the `0x0904` strobes/bit 21, and the x86 wrapper's PCIe core numbering.
    Cost: offline RE (core numbering needs one board measurement); low leverage — after
    §DDD the legacy drivers never load `(src: docs/05 Open questions 3–5; docs/09 §8)`.
-8. **Whether the SMU honors boost above 4550 MHz on X3D** — inferred from the fuse
+8. **Which block latches the PCI-visible chipset device ID** (the A37 spoof via `01:005C` left
+   `43b9`; the firmware never writes the register and has no lock on it — M32). Closes with: Promontory
+   documentation, or a diagnostic that publishes the chipset's hardware pages through PCI config space
+   (the BIOS-time XDATA window cannot be read from the OS). Cost: a new 8051 build + owner flash + PSU
+   cut, low prior `(src: docs/17 §5–§6)`.
+9. **Whether the SMU honors boost above 4550 MHz on X3D** — inferred from the fuse
    formula, never measured (owner experience says yes). Closes with: OS clock readings on
    an A36 boot. Cost: board reading only `(src: docs/07 Open questions; docs/09 §8)`.
 

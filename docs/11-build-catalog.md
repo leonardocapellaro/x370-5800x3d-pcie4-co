@@ -121,7 +121,7 @@ T55 spec: `biosmod_8902_co/trabalhos/55-observador-dxe-hob-ctx-nvram.md`.
 | A19/TARGET-OVERRIDE | `0bf057f029fab861713dc1267da0d942bf1e8dddc0958726baceeecf8affefa9` | board, ~14:41 (unnumbered) | boot stuck at **POST code 36** — unsafe form; jamais reflash (src: RASTRO §K) |
 | A20/GATE12 | `7da3d8fffc327de7729b41c154e0806dfdf353b48e0fbf4f17cb1500eefdb4b0` | **flash 22** (~16:30) | GATE_FECHADO measured on both ports — first x86 write to the caixa gate, closed (src: RASTRO §M) |
 
-## 6. A-series endgame sprint (21–22 Nov, flashes 23–39)
+## 6. A-series endgame sprint (21–25 Nov, flashes 23–40)
 
 The clamp-model and PSP-chain story is docs 05/09; outcomes below.
 
@@ -144,6 +144,8 @@ The clamp-model and PSP-chain story is docs 05/09; outcomes below.
 | A34/WLX370 | `20f3ba79caa6579ab2c9e48fc15f68701b8b22b9c7eb7ce1b2532cf0664b0d79` | flash 37 (order 37/38 inferred) | NÃO-POST — PSP refuses to load an edited signed driver; signature check measured live (src: RASTRO §FFF) |
 | A35/STRAPREGRAVA | `de80fdbccea530241160dd5a868d237a1fba583316f539ce7e44f7544a566c22` | flash 38 (order inferred) | healthy, Gen3 persists (src: RASTRO §EEE) |
 | A36/PBO-CO | `f87ba18d677e6ae79c8a3a5118be87fcebba97f5958690718521f89efbd87a22` | staged `FLASH-NOW-20261122-A36-PBOCO`; flash 39 pending at log close | native menu unlock: 37 x86 bytes in FVMAIN, 6 stores NOPed (AOD trio) — the menu answer (docs 07; src: RASTRO §GGG) |
+| A37/PTDID-43D1 | `09350a09b415474edad3cffa4a14594ad1e3c647f485be24f3db5bb8b0d61e87` | flash 40 (+ second boot after a PSU power cut) | base A36; 84 bytes only in the chipset firmware `_PT_` (guarded `43b9→43d1` write at reset/init + SKU constant + sum32). Result `43b9`, roots max 8.0 ⇒ M32; first reading invalid (upload skipped) — [docs/17](17-chipset-8051-firmware.md) (src: RASTRO §HHH–§III) |
+| A38/SWEEP | `bad4773ecc128866e01078d7e38a31a4fca8646232ca6fa53ca7e0d700693ba2` | staged `FLASH-NOW-20261125-A38-SWEEP`; flash number not recorded | base A36; 133 bytes only in `_PT_`; read-only hardware-page sweep into chip RAM. Never read: the host XDATA window is PEI-only (src: RASTRO §JJJ) |
 
 Related hash (not a CAP): delivered profile `final_settings_A36.CMO`
 `1d085ccea29b84a6629f25dabd281695ccc8ee4edd0223e2af77b474e3964cb1` (boost

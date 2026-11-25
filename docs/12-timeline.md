@@ -197,6 +197,8 @@ builds: docs 11 §1 (src: biosmod_v2/diagnostics/8902-gen4-co-handoff-20261117/H
 | 37 | 22/11 | A34 | NÃO-POST — PSP signature check measured |
 | 38 | 22/11 | A35 | healthy; Gen3 persists |
 | 39 | 22/11 | A36 | pending at log close (menu unlock) |
+| 40 | 25/11 | A37 | `43b9`, roots max 8.0 — first boot invalid (upload skipped), post-PSU-cut boot same ⇒ M32 |
+| — | 25/11 | A38 | built+staged; readout impossible from the OS (window PEI-only); chipset-firmware line closed |
 
 ## Open questions (date-related)
 

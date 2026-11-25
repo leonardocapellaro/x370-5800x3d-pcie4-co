@@ -9,13 +9,13 @@ the decision each branch would force), and no door was called dead without
 "closed with measurement" — live controls decoded twice in the same boot,
 echoes recorded, raw bytes preserved with sha256. The master log is
 `biosmod_8902_co/RASTRO.md` (§B "registro mestre de caminhos mortos", one-line
-verdicts M1–M27, extended to M28–M30 in later sections of the log); part (a) below translates that registry, part (b) gives the
+verdicts M1–M27, extended to M28–M32 in later sections of the log); part (a) below translates that registry, part (b) gives the
 bigger closed routes in hypothesis→test→measurement→status form, and the last
 table lists, per door, **what would reopen it** when the sources state a
 trigger. Nothing here is speculation: each entry points at the file that owns
 the evidence.
 
-## Part (a) — the M-registry (M1–M30)
+## Part (a) — the M-registry (M1–M32)
 
 Format: `M## — what is dead — what closed it — (src)`. "src: RASTRO §B" =
 `biosmod_8902_co/RASTRO.md` §B unless otherwise noted. Supersessions are marked.
@@ -50,6 +50,8 @@ Format: `M## — what is dead — what closed it — (src)`. "src: RASTRO §B" =
 - **M28** — any CAP that writes LTSSM/PHY-affecting registers (`LC_SPEED_CNTL`, `LnkCap`, `LnkCtl`, Retrain) before native training: the A19 class (boot stuck, code 36 — the PHY is mask-Gen3 by policy straps); a static blocklist is now embedded in the verify step — RASTRO §F/§L.
 - **M29** — "efivarfs mtime proves a per-boot firmware write": **false** — firmware writes don't update mtime as assumed; the flash 26/27 "fresh" log was byte-identical to an older capture (stale). *Supersession:* **M29²** — mtime **does** track per-boot writes after all: the RTC runs 3 h behind the kernel (local read as UTC−3), so the flash-27 mtime was fresh and the observer had run with `proxy:=1 echo=1` — the stale-log conclusion of §BB was right on the verdict for the wrong reason; **M29³** — housekeeping: the workstation froze mid-session (21/11 ~21:13): operate light, no 16 MB diffs in loops — (src: RASTRO §Z/§AB/§BB/§CC).
 - **M30** — owner's house rule (decree, 21/11): daily-use machine ⇒ **clean solutions only, no per-boot corruption**; the A27/WIPER (APOB wipe) was built but **never staged or flashed** — archived; `w27.c` kept as a study — RASTRO §JJ (`construcoes/84-wiper-a27-safe/`).
+- **M31** — "make the hash/signature match": validating an edited PSP body by software. The active BL (v0.11.0.87) routes every consumer of the verification result to a halt or a recovery path that itself halts (197+13 sites censused, **zero** fail⇒continue); the only skip ("Skipping validation step…") is gated by the secured-fuse bit (this SKU is secured, proven by flash 37); no byte of flash reaches it; negotiation fields live inside the signed span. Reopening would need AMD's private key, a SHA-256 second preimage, or a mismatched fuse — all outside (two by physics, one by the absolute fuse fence) — T94 (`construcoes/94-verificador-psp/out/VEREDITO.md`, RASTRO §B M31).
+- **M32** — the chipset 8051 spoofing its own device ID: A37 patched the unsigned Promontory firmware (`_PT_`, sum32 only) to write `43d1` into `01:005C` at reset and init; after flash 40 **and** a PSU power cut (needed because the BIOS skips the upload when the chip already holds a firmware), the xHCI still reads `1022:43b9` and the roots stay max 8.0 GT/s. Does not separate "read-only to the 8051" from "not the source of the PCI ID"; the firmware never writes the register and has no lock on it ⇒ the source looks like silicon. A follow-up register sweep (A38) could not be read from the OS (the XDATA window is PEI-only) — [docs/17](17-chipset-8051-firmware.md); RASTRO §HHH–§JJJ.
 
 ## Part (b) — the closed-door catalog
 
@@ -219,6 +221,7 @@ consumer reacts to **any** Gen4 request (`Setup[0x239]=4` or proxy `:=1`) ⇒
 | CO ports / front A host leg (M23, B8) | a named non-CF8 primitive (NBIF77-indirect/APML/new window) — currently zero evidence any exists |
 | SMU queue weakness (M25) | a host handler building a DMA descriptor with host-controlled byte `+0x10`; a host write into table `0x14514`; an AMD document naming a message queue in SMU RAM |
 | PEI dispatch (dynamic inputs) | board H1/H2-class measurement outside the failed observer class (doc 04 Open questions) |
+| chipset-8051 ID spoof (M32) | a config-space-visible diagnostic or Promontory documentation showing a writable latch for the PCI-visible device ID ([docs/17](17-chipset-8051-firmware.md) Open questions) |
 | signed-module rebuild | AMD private key (RSA-2048/4096 factorization or leak) — none public; "accepting the risk" does not buy it (RASTRO §O) |
 | QCB replica / CO gate | the gate opens only via the signed vetting transaction — no offline trigger (RASTRO §N) |
 

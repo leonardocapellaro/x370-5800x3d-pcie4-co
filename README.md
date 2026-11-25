@@ -28,8 +28,8 @@ the story is what it took, and why the two halves cannot meet.
 The headline negative — and the most useful part of this study: **Gen4 + CO in
 one BIOS is excluded by construction** on this platform/BIOS. The same signed
 PSP transaction that validates the platform writes the anti-Gen4 strap; every
-attempt to decouple them closed with measurements — a 30-entry dead-end
-registry (M1–M30), from SMN reachability maps to a PSP-driver re-audit. See
+attempt to decouple them closed with measurements — a 32-entry dead-end
+registry (M1–M32), from SMN reachability maps to a PSP-driver re-audit. See
 [docs/05](docs/05-gen4-the-clamp.md) and the [M-registry](docs/10-negative-results.md).
 
 ## Contents
@@ -43,13 +43,14 @@ registry (M1–M30), from SMN reachability maps to a PSP-driver re-audit. See
 - [07 — Curve Optimizer & PBO](docs/07-co-pbo-menus.md) (hidden menus, capability flags, boost formula, `.CMO` profiles, the 37-byte build)
 - [08 — SMN probes](docs/08-smn-probes.md) (read-only CF8/CFC probing from custom DXE/PEI modules; reachability map)
 - [09 — Reverse-engineering the PSP side](docs/09-psp-driver-re.md) (Xtensa drivers, the `ctx[3]` gate, commit mechanism, two censuses that found nothing — and what that proves)
-- [10 — Negative results, all of them](docs/10-negative-results.md) (M1–M30 registry + 15 closing doors)
+- [10 — Negative results, all of them](docs/10-negative-results.md) (M1–M32 registry + 15 closing doors)
 - [11 — Build catalog](docs/11-build-catalog.md) (every CAP we made: base, sha, flash number, verdict)
 - [12 — Timeline](docs/12-timeline.md) (nine days, task by task, flash by flash)
 - [13 — Open questions](docs/13-open-questions.md)
 - [14 — Tooling](docs/14-tooling.md) (what's in `tools/`, how to run/reproduce)
 - [15 — Memory training F9 notes](docs/15-memory-f9.md)
 - [16 — Glossary](docs/16-glossary.md)
+- [17 — The chipset's own 8051 firmware: can it spoof the device ID?](docs/17-chipset-8051-firmware.md) (A37/A38, M32 — patchable firmware, unchanged ID, and the upload-skip trap)
 
 ## Reproduce the final build yourself (no firmware in this repo)
 
