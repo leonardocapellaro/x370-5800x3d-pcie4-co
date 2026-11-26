@@ -72,7 +72,14 @@ The argument, in the four links the campaign could verify (full detail in
 Every attempt to decouple validation from the strap is catalogued with the measurement that
 killed it: the 15 closed routes listed in
 [docs/10](10-negative-results.md) part (b), and the complete registry is the
-M1–M30 list there.
+M1–M37 list there.
+
+**Addendum (25–26 Nov).** After the close the owner reopened the campaign twice, for the two ideas that
+attack the *input* of the check instead of its writer: have the chipset announce another device ID from its
+unsigned 8051 firmware ([docs/17](17-chipset-8051-firmware.md), [docs/18](18-chipset-8051-id-hunt.md)), and
+forge the ID on an internal device through the NBIF strap ([docs/19](19-final-sweep-and-closure.md)). Ten more
+builds (A37–A45), flashes 40–48, M32–M37: the ID never changed, and the driver audit showed the PSP also
+demands a challenge–response from the same device. The verdict above stands; the campaign is closed.
 
 ## Scale and safety record
 

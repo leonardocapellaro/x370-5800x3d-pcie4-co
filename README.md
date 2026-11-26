@@ -3,8 +3,8 @@
 A complete, documented reverse-engineering case study of ASUS BIOS 8902 for the
 **ROG Crosshair VI Hero (X370)** running a **Ryzen 7 5800X3D** — including the
 firmware paths that decide PCIe link speed, what the chipset/PSP validation
-actually does, how AMD's menu capability flags work, and roughly **70 offline
-built+validated BIOS builds** behind ~40 board flashes (every flash done
+actually does, how AMD's menu capability flags work, and roughly **80 offline
+built+validated BIOS builds** behind 48 numbered board flashes (every flash done
 manually by the human owner, zero bricks, zero fuse touches).
 
 This repository contains **analysis, tools and hashes — no firmware**. You
@@ -28,9 +28,16 @@ the story is what it took, and why the two halves cannot meet.
 The headline negative — and the most useful part of this study: **Gen4 + CO in
 one BIOS is excluded by construction** on this platform/BIOS. The same signed
 PSP transaction that validates the platform writes the anti-Gen4 strap; every
-attempt to decouple them closed with measurements — a 32-entry dead-end
-registry (M1–M32), from SMN reachability maps to a PSP-driver re-audit. See
+attempt to decouple them closed with measurements — a dead-end registry
+(M1–M37), from SMN reachability maps to a PSP-driver re-audit, a probe campaign
+run from inside the chipset's own 8051 firmware, and a final strap test. See
 [docs/05](docs/05-gen4-the-clamp.md) and the [M-registry](docs/10-negative-results.md).
+
+**Status (26 Nov 2026): the campaign is closed.** The last two lines of attack —
+making the chipset announce a different device ID from its unsigned 8051 firmware
+([docs/17](docs/17-chipset-8051-firmware.md), [docs/18](docs/18-chipset-8051-id-hunt.md)),
+and forging the ID on an internal device through the NBIF strap
+([docs/19](docs/19-final-sweep-and-closure.md)) — both ended with the ID unchanged.
 
 ## Contents
 
@@ -43,14 +50,16 @@ registry (M1–M32), from SMN reachability maps to a PSP-driver re-audit. See
 - [07 — Curve Optimizer & PBO](docs/07-co-pbo-menus.md) (hidden menus, capability flags, boost formula, `.CMO` profiles, the 37-byte build)
 - [08 — SMN probes](docs/08-smn-probes.md) (read-only CF8/CFC probing from custom DXE/PEI modules; reachability map)
 - [09 — Reverse-engineering the PSP side](docs/09-psp-driver-re.md) (Xtensa drivers, the `ctx[3]` gate, commit mechanism, two censuses that found nothing — and what that proves)
-- [10 — Negative results, all of them](docs/10-negative-results.md) (M1–M32 registry + 15 closing doors)
+- [10 — Negative results, all of them](docs/10-negative-results.md) (M1–M37 registry + 15 closing doors)
 - [11 — Build catalog](docs/11-build-catalog.md) (every CAP we made: base, sha, flash number, verdict)
-- [12 — Timeline](docs/12-timeline.md) (nine days, task by task, flash by flash)
+- [12 — Timeline](docs/12-timeline.md) (14–26 Nov, task by task, flash by flash)
 - [13 — Open questions](docs/13-open-questions.md)
 - [14 — Tooling](docs/14-tooling.md) (what's in `tools/`, how to run/reproduce)
 - [15 — Memory training F9 notes](docs/15-memory-f9.md)
 - [16 — Glossary](docs/16-glossary.md)
 - [17 — The chipset's own 8051 firmware: can it spoof the device ID?](docs/17-chipset-8051-firmware.md) (A37/A38, M32 — patchable firmware, unchanged ID, and the upload-skip trap)
+- [18 — Hunting the device ID from inside the 8051](docs/18-chipset-8051-id-hunt.md) (A39–A43, M33 — a working 8051→OS side channel through PCI config space, the full register-page sweep, and why no firmware-accessible ID source was found)
+- [19 — The last sweep and the close](docs/19-final-sweep-and-closure.md) (M35–M37 — what the PSP really demands besides the ID, the bus-swap idea, the NBIF ID-strap test A44/A45, final state)
 
 ## Reproduce the final build yourself (no firmware in this repo)
 

@@ -121,7 +121,7 @@ T55 spec: `biosmod_8902_co/trabalhos/55-observador-dxe-hob-ctx-nvram.md`.
 | A19/TARGET-OVERRIDE | `0bf057f029fab861713dc1267da0d942bf1e8dddc0958726baceeecf8affefa9` | board, ~14:41 (unnumbered) | boot stuck at **POST code 36** — unsafe form; jamais reflash (src: RASTRO §K) |
 | A20/GATE12 | `7da3d8fffc327de7729b41c154e0806dfdf353b48e0fbf4f17cb1500eefdb4b0` | **flash 22** (~16:30) | GATE_FECHADO measured on both ports — first x86 write to the caixa gate, closed (src: RASTRO §M) |
 
-## 6. A-series endgame sprint (21–25 Nov, flashes 23–40)
+## 6. A-series endgame sprint (21–26 Nov, flashes 23–48)
 
 The clamp-model and PSP-chain story is docs 05/09; outcomes below.
 
@@ -146,6 +146,14 @@ The clamp-model and PSP-chain story is docs 05/09; outcomes below.
 | A36/PBO-CO | `f87ba18d677e6ae79c8a3a5118be87fcebba97f5958690718521f89efbd87a22` | staged `FLASH-NOW-20261122-A36-PBOCO`; flash 39 pending at log close | native menu unlock: 37 x86 bytes in FVMAIN, 6 stores NOPed (AOD trio) — the menu answer (docs 07; src: RASTRO §GGG) |
 | A37/PTDID-43D1 | `09350a09b415474edad3cffa4a14594ad1e3c647f485be24f3db5bb8b0d61e87` | flash 40 (+ second boot after a PSU power cut) | base A36; 84 bytes only in the chipset firmware `_PT_` (guarded `43b9→43d1` write at reset/init + SKU constant + sum32). Result `43b9`, roots max 8.0 ⇒ M32; first reading invalid (upload skipped) — [docs/17](17-chipset-8051-firmware.md) (src: RASTRO §HHH–§III) |
 | A38/SWEEP | `bad4773ecc128866e01078d7e38a31a4fca8646232ca6fa53ca7e0d700693ba2` | staged `FLASH-NOW-20261125-A38-SWEEP`; flash number not recorded | base A36; 133 bytes only in `_PT_`; read-only hardware-page sweep into chip RAM. Never read: the host XDATA window is PEI-only (src: RASTRO §JJJ) |
+| A39/VIDDID-8550 | `f59385ccef86295c7422e5924c4adb66397b2bf97434e730a07cd591d4431392` | flash 42 (after PSU cut) | base A36; 99 bytes only in `_PT_`; guarded write at `01:8552` + status over the new config-space channel. `43b9`; `F4..F7 = 11 12 42 00` ⇒ hooks ran, nothing written, register holds `1242` ⇒ M33 — [docs/18](18-chipset-8051-id-hunt.md) (src: RASTRO §LLL) |
+| A40/CAROUSEL | `dc589ed5eb43d8ff5e5769ae495e82ddeeae343cad3b8a3a268aeec61498d9c8` | flash 43 | base A36; 600 bytes only in `_PT_`; read-only sweep of page 01, state in XDATA. Routine ran, state lost, sweep never started — no verdict (src: RASTRO §MMM–§NNN) |
+| A41/MEMINT | `863b318668f7723f24605aa67399c055b00d2493b2b463453d6eb8f59c8b910b` | flash 44 | base A36; 547 bytes only in `_PT_`; same sweep, state in internal RAM. Killed by the interrupt stack after the first page — no verdict (src: RASTRO §NNN–§OOO) |
+| A42/ABOVE-STACK | `0e205813f253b7846efe02e677d661a5421ee42bf67de5721caecbdb5db01815` | flash 45 | base A36; only `_PT_`; stack-free sweep. **Complete**: ID pair at `01:005E..5F` (known) and one hit at `01:58A2..A3` (src: RASTRO §OOO–§PPP) |
+| A43/WRITE-58A3 (full) | `943b3638d1e2fee796d6536873c923f0b04f45b439b9a07bc33ec3585583083f` | flash 46 | base A36; only `_PT_`; guarded+echoed writes to `01:58A3`/`01:005E` + two firmware ID literals swapped. Guard never satisfied (cell is not a copy), no hardware write, ID `43b9` (src: RASTRO §PPP) |
+| A43 minimal | `d30e026d17ba1dcd3f0054b61908a34c54f89ec5010661c91d7bbebbfcbf605d` | staged, **not flashed** | the two cell writes only; kept as an optional control (src: RASTRO §PPP, §QQQ) |
+| A44/STRAP-ID | `4a6e4d9979a15440fc7c341b42f1c76bd088876d9bd52f560ca1e48c35222753` | flash 47 | base A36; 50 bytes in the unsigned TE `21be6180` (A35 skeleton); guarded write of `43d1` to the NBIF0 ID strap `SMN 0x10134000`. `0c:00.0` still `148a` ⇒ M36 — [docs/19](19-final-sweep-and-closure.md) (src: RASTRO §TTT–§UUU) |
+| A45/STRAP-BLIND | `ced7a7c22d03bebbee786008df431522e2bb4abebb48f727666077dc670212f9` | flash 48 | base A36; same hook; unguarded write (`0x100043d1` when the strap reads `FFFFFFFF`) — the only blind write of the campaign, owner-ordered. `0c:00.0` still `148a`, SMN control alive ⇒ M37, campaign closed (src: RASTRO §VVV–§WWW) |
 
 Related hash (not a CAP): delivered profile `final_settings_A36.CMO`
 `1d085ccea29b84a6629f25dabd281695ccc8ee4edd0223e2af77b474e3964cb1` (boost

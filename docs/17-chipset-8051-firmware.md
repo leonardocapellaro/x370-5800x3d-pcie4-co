@@ -16,6 +16,11 @@ OS, so the line is closed. The doc also records a trap that invalidated our firs
 the chipset-firmware upload when the chip already holds a firmware**, so a freshly flashed BIOS can test
 nothing unless the PSU is cut first.
 
+> **Update (25–26 Nov).** "The line is closed" was premature. M32 was re-scoped to "writing `01:005C`"
+> and the work continued the same evening with a config-space side channel that *can* be read from the OS:
+> see [docs/18](18-chipset-8051-id-hunt.md) (A39–A43, M33). [docs/19](19-final-sweep-and-closure.md) then
+> shows why a changed ID alone would not have been enough, and closes the campaign.
+
 ## 1. Why this idea was on the table
 
 - The PSP vetting transaction reads the chipset xHCI device ID and looks it up in a signed 24-row whitelist;

@@ -42,12 +42,19 @@ what could still change the Gen4+CO verdict; nothing in groups 2–3 can.
    semantics of the `0x0904` strobes/bit 21, and the x86 wrapper's PCIe core numbering.
    Cost: offline RE (core numbering needs one board measurement); low leverage — after
    §DDD the legacy drivers never load `(src: docs/05 Open questions 3–5; docs/09 §8)`.
-8. **Which block latches the PCI-visible chipset device ID** (the A37 spoof via `01:005C` left
-   `43b9`; the firmware never writes the register and has no lock on it — M32). Closes with: Promontory
-   documentation, or a diagnostic that publishes the chipset's hardware pages through PCI config space
-   (the BIOS-time XDATA window cannot be read from the OS). Cost: a new 8051 build + owner flash + PSU
-   cut, low prior `(src: docs/17 §5–§6)`.
-9. **Whether the SMU honors boost above 4550 MHz on X3D** — inferred from the fuse
+8. **Which block latches the PCI-visible chipset device ID.** The config-space diagnostic this item
+   asked for was built (25 Nov): `01:005C` written without effect (M32), `01:8550` holds the ASMedia core
+   ID `1242` (M33), a full sweep of hardware page 01 found no second stable copy, and the firmware's ID
+   literals are not the source. Closes with: Promontory documentation or silicon-level work. Even then a
+   changed ID would not be enough by itself (next item) `(src: docs/18 §9)`.
+9. **A forged ID that also survives the function-2 challenge.** The active PSP driver wants a newer
+   chipset's ID row **and** an approved challenge–response on function 2 of the same device (M35). The one
+   idea that addressed both (B10: forged ID on an internal device, then a bus swap) died at its first gate:
+   the NBIF device-ID strap does not respond to x86 writes at the only hook we can run (M36/M37). Closes
+   with: a 400/500-series chipset, an x86-definable ID shown by another route, or an offline proof that the
+   challenge needs no secret plus an x86-controllable responder. Cost: none of these is available on this
+   board `(src: docs/19 §4)`.
+10. **Whether the SMU honors boost above 4550 MHz on X3D** — inferred from the fuse
    formula, never measured (owner experience says yes). Closes with: OS clock readings on
    an A36 boot. Cost: board reading only `(src: docs/07 Open questions; docs/09 §8)`.
 

@@ -1,4 +1,4 @@
-# 12 — Timeline: 14→22 November 2026, day by day
+# 12 — Timeline: 14→26 November 2026, day by day
 
 ## Summary
 
@@ -198,7 +198,19 @@ builds: docs 11 §1 (src: biosmod_v2/diagnostics/8902-gen4-co-handoff-20261117/H
 | 38 | 22/11 | A35 | healthy; Gen3 persists |
 | 39 | 22/11 | A36 | pending at log close (menu unlock) |
 | 40 | 25/11 | A37 | `43b9`, roots max 8.0 — first boot invalid (upload skipped), post-PSU-cut boot same ⇒ M32 |
-| — | 25/11 | A38 | built+staged; readout impossible from the OS (window PEI-only); chipset-firmware line closed |
+| — | 25/11 | A38 | built+staged; readout impossible from the OS (window PEI-only); chipset-firmware line closed (reopened the same evening, below) |
+| 42 | 25/11 18:24 | A39 | `43b9`; 8051→OS channel works; `01:8550` holds `1242` ⇒ M33 |
+| 43 | 25/11 ~19:35 | A40 | routine ran, probe state lost, no sweep — no verdict |
+| 44 | 25/11 ~21:00 | A41 | first page swept, then state destroyed by the interrupt stack — no verdict |
+| 45 | 25/11 21:08 | A42 | page-01 sweep complete: known ID register + one hit at `01:58A2..A3` |
+| 46 | 25/11 21:46 | A43 (full) | the `58A2` hit is a changing register, not a copy; no write happened; ID `43b9` |
+| 47 | 26/11 | A44 | NBIF ID strap, guarded write: `0c:00.0` still `148a` ⇒ M36 |
+| 48 | 26/11 | A45 | NBIF ID strap, blind write: still `148a`, SMN control alive ⇒ M37; **campaign closed** |
+
+After the 22 Nov close the owner reopened the campaign twice: on 25 Nov for the chipset-firmware idea
+(docs [17](17-chipset-8051-firmware.md), [18](18-chipset-8051-id-hunt.md)) and on 26 Nov for one last general
+sweep (static audit ⇒ M35, then the B10 strap test; [docs/19](19-final-sweep-and-closure.md)). Flash 41 is not
+recorded as a number in the log `(src: RASTRO §HHH–§WWW)`.
 
 ## Open questions (date-related)
 
